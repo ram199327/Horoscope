@@ -12,35 +12,36 @@ router.get('/', function(req, res, next) {
 router.get('/predictions', function(req, res) {
   var dob = req.query.dob;
   var gender = req.query.gender;
-  // console.log(getSign(dob));
+  var sign = getSign(dob);
   var category = getCategory(dob,gender);
-  predictions.find({$or:[{category : category},{placement : 'intro'}]}).toArray()
+  predictions.find({$and:[{sign:sign},{$or:[{category : category},{placement : 'intro'}]}]}).toArray()
   .then(function(result){
-    var placement_intro=[],placement_category=[],placement_prediction=[];
+    var placement_intro={},placement_category={},placement_prediction={};
     result.forEach(function(val,index){
       if(val['placement'] == 'intro'){
-        placement_intro.push(val);
+        placement_intro[val.value_id] = val;
       }
       else if(val['placement'] == 'predictions'){
-        placement_prediction.push(val);
+        placement_prediction[val.value_id] = val;
       }
       else if(val['placement'] == 'category'){
-        placement_category.push(val);
+        placement_category[val.value_id] = val;
       }
     });
-    var index,final_result = [];
-    var horos_no_of_user = getNumber(dob);    
-    index = horos_no_of_user % placement_intro.length;
-    final_result.push(placement_intro[index - 1]);
-    index = horos_no_of_user % placement_category.length;
-    final_result.push(placement_category[index - 1]);
-    index = horos_no_of_user % placement_prediction.length;
-    final_result.push(placement_prediction[index - 1]);
-
-    // res.json(result[index - 1]);
+    var final_result = [];
+    var horos_no = getNumber(dob);    
+    final_result.push(filteredResult(placement_intro,horos_no));
+    final_result.push(filteredResult(placement_category,horos_no));
+    final_result.push(filteredResult(placement_prediction,horos_no));
     res.json(final_result);
   })
 });
+
+function filteredResult(obj,horos_no){
+  var obj_len = Object.keys(obj).length;
+  var key = horos_no % obj_len;
+  return obj[key ? key : (obj_len - key)];
+}
 
 //Get number based on DOB
 function getNumber(dob){
