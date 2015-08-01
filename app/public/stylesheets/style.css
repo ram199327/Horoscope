@@ -1,8 +1,24 @@
 body {
-  padding: 50px;
+  padding: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+label,.radio{
+	padding-right: 40px;
+}
+label span{
+	padding-right: 10px;
+}
+.radio label{
+	padding-right :5px;
+}
+.radio{
+	display: inline;
+}
+.container{
+	max-width: 768px;
+	margin: 0px auto;
 }

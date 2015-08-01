@@ -11,13 +11,34 @@ router.get('/', function(req, res, next) {
 
 router.get('/predictions', function(req, res) {
   var dob = req.query.dob;
-  console.log(getSign(dob));
-  console.log(getCategory(dob));
-  predictions.find({}).toArray()
+  var gender = req.query.gender;
+  // console.log(getSign(dob));
+  var category = getCategory(dob,gender);
+  predictions.find({$or:[{category : category},{placement : 'intro'}]}).toArray()
   .then(function(result){
-    var horos_no_of_user = getNumber(dob);
-    var index = horos_no_of_user % result.length;
-    res.json(result[index - 1]);
+    var placement_intro=[],placement_category=[],placement_prediction=[];
+    result.forEach(function(val,index){
+      if(val['placement'] == 'intro'){
+        placement_intro.push(val);
+      }
+      else if(val['placement'] == 'predictions'){
+        placement_prediction.push(val);
+      }
+      else if(val['placement'] == 'category'){
+        placement_category.push(val);
+      }
+    });
+    var index,final_result = [];
+    var horos_no_of_user = getNumber(dob);    
+    index = horos_no_of_user % placement_intro.length;
+    final_result.push(placement_intro[index - 1]);
+    index = horos_no_of_user % placement_category.length;
+    final_result.push(placement_category[index - 1]);
+    index = horos_no_of_user % placement_prediction.length;
+    final_result.push(placement_prediction[index - 1]);
+
+    // res.json(result[index - 1]);
+    res.json(final_result);
   })
 });
 
@@ -73,13 +94,29 @@ function getSign(dob){
     return 'pisces';
 }
 
-function getCategory(dob){
+function getAge(dob){
   var arr = dob.split('-');
   var current_date = new Date();
   var actual_dob = new Date(arr[2],arr[1],arr[0]);
   var diffTime = current_date.getTime() - actual_dob.getTime();
   var age = diffTime/(1000*3600*24*365.25)
   return Math.floor(age);
+}
+
+function getCategory(dob,gender){
+  var age = getAge(dob);
+  if(age < 20)
+    return 'children';
+  else if ((age < 25 || (age > 30 && age <= 35)) && gender == 'M')
+    return 'career';
+  else if ((age > 25 && age <= 30) && gender == 'M')
+    return 'romance';
+  else if (age <= 24 && gender == 'F')
+    return 'career';
+  else if (age <= 32 && gender == 'F')
+    return 'romance';
+  else
+    return 'finance_parenthood';
 }
 
 module.exports = router;
