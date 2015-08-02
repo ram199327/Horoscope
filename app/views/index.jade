@@ -7,13 +7,13 @@ block content
 		form(action='/predictions',method='GET',id='form')
 			label
 				span Date
-				input(type='date',name='dob')
+				input(type='date',name='dob',required)
 			.radio
 				label
-					input(type='radio',name='gender',value='M')
+					input(type='radio',name='gender',value='M',required)
 					| Male
 				label
-					input(type='radio',name='gender',value='F')
+					input(type='radio',name='gender',value='F',required)
 					| Female
 			button Submit
 		p#intro
@@ -27,9 +27,9 @@ block content
 			// bind 'myForm' and provide a simple callback function 
 			$('#form').submit(function(){
 				$(this).ajaxSubmit({success:function(res,status,xhr,form){
-					$('#intro').text(res[0].value);
-					$('#category').text(res[1].value);
-					$('#prediction').text(res[2].value);
+					$('#intro').text(res["into"].value);
+					$('#category').text(res["category"].value);
+					$('#prediction').text(res["prediction"].value);
 				}}); 
 				return false;
 			})

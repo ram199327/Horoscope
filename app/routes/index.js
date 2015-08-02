@@ -10,33 +10,48 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/predictions', function(req, res) {
-  var dob = req.query.dob;
-  var gender = req.query.gender;
+  var dob = req.query.dob,
+    gender = req.query.gender;
   var sign = getSign(dob);
   var category = getCategory(dob,gender);
+
+  //Return all records with placement intro or a valid category
   predictions.find({$and:[{sign:sign},{$or:[{category : category},{placement : 'intro'}]}]}).toArray()
   .then(function(result){
-    var placement_intro={},placement_category={},placement_prediction={};
+    var placement={
+      intro:{},
+      category:{},
+      prediction:{}
+    };
     result.forEach(function(val,index){
       if(val['placement'] == 'intro'){
-        placement_intro[val.value_id] = val;
+        placement.intro[val.value_id] = val;
       }
       else if(val['placement'] == 'predictions'){
-        placement_prediction[val.value_id] = val;
+        placement.prediction[val.value_id] = val;
       }
       else if(val['placement'] == 'category'){
-        placement_category[val.value_id] = val;
+        placement.category[val.value_id] = val;
       }
     });
-    var final_result = [];
-    var horos_no = getNumber(dob);    
-    final_result.push(filteredResult(placement_intro,horos_no));
-    final_result.push(filteredResult(placement_category,horos_no));
-    final_result.push(filteredResult(placement_prediction,horos_no));
+    var final_result = getFinalResult(placement,dob);    
     res.json(final_result);
-  })
+  });
 });
 
+//Get User horoscope number and call filtered result 
+//for each placement key(intro,category,prediction)
+function getFinalResult(placement,dob){
+  var final_result = {};
+  var horos_no = getNumber(dob);    
+  var keys = Object.keys(placement);
+  keys.forEach(function(val,i){
+    final_result[val] = filteredResult(placement[val],horos_no)
+  });
+  return final_result;
+}
+
+//Get Individual result according to horoscope number
 function filteredResult(obj,horos_no){
   var obj_len = Object.keys(obj).length;
   var key = horos_no % obj_len;
