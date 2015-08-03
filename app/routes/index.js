@@ -82,7 +82,7 @@ function sumDigits(number) {
 
 function getSign(dob){
   var arr = dob.split('-');
-  var date = parseInt(arr[0]);
+  var date = parseInt(arr[2]);
   var month = parseInt(arr[1]);
   if(date >= 21 && month == 3 || date <= 19 && month == 4)
     return 'aries';
@@ -113,7 +113,7 @@ function getSign(dob){
 function getAge(dob){
   var arr = dob.split('-');
   var current_date = new Date();
-  var actual_dob = new Date(arr[2],arr[1],arr[0]);
+  var actual_dob = new Date(arr[0],arr[1],arr[2]);
   var diffTime = current_date.getTime() - actual_dob.getTime();
   var age = diffTime/(1000*3600*24*365.25)
   return Math.floor(age);

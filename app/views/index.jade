@@ -27,7 +27,7 @@ block content
 			// bind 'myForm' and provide a simple callback function 
 			$('#form').submit(function(){
 				$(this).ajaxSubmit({success:function(res,status,xhr,form){
-					$('#intro').text(res["into"].value);
+					$('#intro').text(res["intro"].value);
 					$('#category').text(res["category"].value);
 					$('#prediction').text(res["prediction"].value);
 				}}); 
