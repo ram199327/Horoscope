@@ -2,24 +2,21 @@ extends layout
 
 block content
 	.container
-		h1= title
-		p Welcome to #{title}
+		h1.text-center #{title}
 		form(action='/predictions',method='GET',id='form')
-			label
-				span Date
-				input(type='date',name='dob',required)
-			.radio
-				label
-					input(type='radio',name='gender',value='M',required)
-					| Male
-				label
-					input(type='radio',name='gender',value='F',required)
-					| Female
-			button Submit
-		p#intro
-		p#category
-		p#prediction
-	script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js")
+			div.date-container
+				input(type='text',name='dob',class='date-input form-control',required,placeholder='Select D.O.B')
+			div.gender-container.text-center
+				label.male
+					input(type='radio',name='gender',class='invisible',value='M',required)
+				label.female
+					input(type='radio',name='gender',class='invisible',value='F',required)
+			div.text-center
+				button(class='btn submit-btn') Submit
+		.result.hide
+			p#intro
+			p#category
+			p#prediction
 	script(src="http://malsup.github.com/jquery.form.js")
 	script.
 		// wait for the DOM to be loaded 
@@ -30,10 +27,21 @@ block content
 					$('#intro').text(res["intro"].value);
 					$('#category').text(res["category"].value);
 					$('#prediction').text(res["prediction"].value);
+					$('.result').removeClass('hide');
 				}}); 
 				return false;
-			})
+			});
+			$('.date-input').pickadate({
+				format: 'yyyy-mm-dd',
+				selectYears: true,
+				selectMonths: true,
+				min: -353463,
+				max: true
+			});
 			
+			var options='';
+			for(var i = 1915 ; i < 2004; i++){
+				options+= "<option value='"+i+"'>"+i+"</option>";
+			}
+			$('.picker__select--year').prepend(options);
 		}); 
-
-

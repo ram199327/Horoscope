@@ -6,19 +6,72 @@ body {
 a {
   color: #00B7FF;
 }
-label,.radio{
-	padding-right: 40px;
-}
-label span{
-	padding-right: 10px;
-}
-.radio label{
-	padding-right :5px;
-}
-.radio{
-	display: inline;
-}
+
 .container{
 	max-width: 768px;
 	margin: 0px auto;
+}
+body{
+  color: #fff;
+  background-image: url('/images/bg.jpg');
+  background-size: cover;
+}
+h1{
+  margin-bottom: 40px;
+}
+.date-container{
+  position: relative;
+  margin: 0 auto;
+  width: 320px;
+}
+.date-input{
+  border-radius: 0px;
+  background-color: #fff !important;
+  height: 40px;
+}
+.date-container,.gender-container{
+  margin-bottom: 20px;
+}
+.picker select{
+  padding: 4px 6px;
+  background-color: transparent;
+}
+.picker .picker__select--month{
+  width: 40%;
+}
+.picker .picker__select--year{
+  width: 25%;
+}
+
+.male,.female{
+  width: 58px;
+  height: 70px;
+  display: inline-block;
+}
+.male{
+  background: url('/images/men.png') no-repeat;
+  margin-right: 25px;
+}
+.female{
+  background: url('/images/women.png') no-repeat;
+}
+.submit-btn,.submit-btn:active,.submit-btn:focus,.submit-btn:hover{
+  border-radius: 0px;
+  background-color: #5dc233;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  width: 190px;
+  height: 40px;
+  color: #fff;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+
+.result{
+  margin-top: 40px;
+  font-size: 16px;
+  text-align: justify;
+  background-color: rgba(78,78,78,0.5);
+  padding: 30px;
 }
