@@ -29,6 +29,10 @@ h1{
   background-color: #fff !important;
   height: 40px;
 }
+.form-control{
+  border-radius: 0px;
+  height: 40px;
+}
 .date-container,.gender-container{
   margin-bottom: 20px;
 }
@@ -54,6 +58,9 @@ h1{
 }
 .female{
   background: url('/images/women.png') no-repeat;
+}
+.selected{
+  background-color: #333;
 }
 .submit-btn,.submit-btn:active,.submit-btn:focus,.submit-btn:hover{
   border-radius: 0px;

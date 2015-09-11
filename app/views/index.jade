@@ -5,6 +5,8 @@ block content
 		h1.text-center #{title}
 		form(action='/predictions',method='GET',id='form')
 			div.date-container
+				input(type='text',name='name',class='form-control',required,placeholder='Enter your name')
+			div.date-container
 				input(type='text',name='dob',class='date-input form-control',required,placeholder='Select D.O.B')
 			div.gender-container.text-center
 				label.male
@@ -22,16 +24,20 @@ block content
 		// wait for the DOM to be loaded 
 		$(document).ready(function() { 
 			// bind 'myForm' and provide a simple callback function 
-			$('#form').submit(function(){
+			$('#form')
+			.submit(function(){
 				$(this).ajaxSubmit({success:function(res,status,xhr,form){
 					$('#intro').text(res["intro"].value);
 					$('#category').text(res["category"].value);
 					$('#prediction').text(res["prediction"].value);
 					$('.result').removeClass('hide');
+					predendYears();
 				}}); 
 				return false;
 			});
-			$('.date-input').pickadate({
+			
+			$('.date-input')
+			.pickadate({
 				format: 'yyyy-mm-dd',
 				selectYears: true,
 				selectMonths: true,
@@ -39,9 +45,19 @@ block content
 				max: true
 			});
 			
-			var options='';
-			for(var i = 1915 ; i < 2004; i++){
-				options+= "<option value='"+i+"'>"+i+"</option>";
+			$('.male,.female')
+			.on('click',function(){
+				$('.gender-container label').removeClass('selected');
+				$(this).addClass('selected');
+			});
+			
+			function predendYears(){
+				var options='';
+				for(var i = 1915 ; i < 2004; i++){
+					options+= "<option value='"+i+"'>"+i+"</option>";
+				}
+				$('.picker__select--year').prepend(options);
 			}
-			$('.picker__select--year').prepend(options);
+			predendYears();
+			
 		}); 
