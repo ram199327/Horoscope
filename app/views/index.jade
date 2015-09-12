@@ -24,6 +24,7 @@ block content
 		// wait for the DOM to be loaded 
 		$(document).ready(function() { 
 			// bind 'myForm' and provide a simple callback function 
+			var selected = '';
 			$('#form')
 			.submit(function(){
 				$(this).ajaxSubmit({success:function(res,status,xhr,form){
@@ -31,7 +32,7 @@ block content
 					$('#category').text(res["category"].value);
 					$('#prediction').text(res["prediction"].value);
 					$('.result').removeClass('hide');
-					predendYears();
+					predendYears(selected);
 				}}); 
 				return false;
 			});
@@ -42,7 +43,10 @@ block content
 				selectYears: true,
 				selectMonths: true,
 				min: -353463,
-				max: true
+				max: true,
+				onOpen: function(){
+					predendYears(selected);
+				}
 			});
 			
 			$('.male,.female')
@@ -51,13 +55,23 @@ block content
 				$(this).addClass('selected');
 			});
 			
-			function predendYears(){
+			function predendYears(selected){
+				$('.picker__select--year').html('');
 				var options='';
-				for(var i = 1915 ; i < 2004; i++){
-					options+= "<option value='"+i+"'>"+i+"</option>";
+				for(var i = 2015 ; i > 1915; i--){
+					if(selected == i){
+						options+= "<option value='"+i+"' selected>"+i+"</option>";
+					}
+					else
+						options+= "<option value='"+i+"'>"+i+"</option>";
 				}
 				$('.picker__select--year').prepend(options);
 			}
 			predendYears();
+			
+			$('.picker__select--year').on('change',function(){
+				selected = $(this).val();
+				predendYears($(this).val());
+			});
 			
 		}); 
