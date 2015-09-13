@@ -34,16 +34,16 @@ router.get('/predictions', function(req, res) {
         placement.category[val.value_id] = val;
       }
     });
-    var final_result = getFinalResult(placement,dob);    
+    var final_result = getFinalResult(placement,dob);
     res.json(final_result);
   });
 });
 
-//Get User horoscope number and call filtered result 
+//Get User horoscope number and call filtered result
 //for each placement key(intro,category,prediction)
 function getFinalResult(placement,dob){
   var final_result = {};
-  var horos_no = getNumber(dob);    
+  var horos_no = getNumber(dob);
   var keys = Object.keys(placement);
   keys.forEach(function(val,i){
     final_result[val] = filteredResult(placement[val],horos_no)

@@ -82,3 +82,31 @@ h1{
   background-color: rgba(78,78,78,0.5);
   padding: 30px;
 }
+.slider-left{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  width: 120px;
+  background: url('../images/spritesheet.png');
+  -webkit-animation: slide-left 15s linear infinite;
+}
+.slider-right{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 120px;
+  background: url('../images/spritesheet.png');
+  -webkit-animation: slide-right 15s linear infinite;
+}
+
+@-webkit-keyframes slide-left {
+    from { background-position: left 0; }
+    to { background-position: left -1560px; }
+}
+
+@-webkit-keyframes slide-right {
+    from { background-position: left 0; }
+    to { background-position: left 1560px; }
+}
